@@ -60,6 +60,34 @@ fun Greeting(miModel: VModel) {
         }
     }
 
+    /**
+     * Composable que muestra el récord actual del juego.
+     * Utiliza el valor almacenado en [Data.record] para mostrar el récord actual.
+     */
+    @Composable
+    fun  Record(){
+        Text(
+            text = "RECORD: ${Data.record.value} ", // Mostrar el número de ronda
+            color = Color.Black,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
+    }
+
+    /**
+     * Composable que muestra el número de la ronda actual del juego.
+     * Utiliza el valor almacenado en [Data.round] para mostrar la ronda actual.
+     */
+    @Composable
+    fun Ronda() {
+        Text(
+            text = "RONDA: ${Data.round.value} ", // Mostrar el número de ronda
+            color = Color.Black,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
+
+    }
 
 
 }
