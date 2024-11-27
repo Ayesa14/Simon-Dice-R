@@ -89,5 +89,33 @@ fun Greeting(miModel: VModel) {
 
     }
 
+    /**
+     * Composable que muestra una disposición de botones organizados en filas y columnas.
+     *
+     * @param vModel La instancia del modelo VModel asociado a la botonera.
+     */
+    @Composable
+    fun Botonera(vModel: VModel) {
+        val colorsInTwoRows = Data.Colors.values().toList().chunked(2)
+
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            colorsInTwoRows.forEach { rowColors ->
+                Row {
+                    rowColors.forEach { color ->
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Boton(color = color.color, miModel = vModel, name = color.colorName)
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
+
+
+
 
 }
