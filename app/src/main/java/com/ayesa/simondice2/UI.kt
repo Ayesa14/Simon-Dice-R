@@ -115,7 +115,111 @@ fun Greeting(miModel: VModel) {
         }
     }
 
+    /**
+     * Composable que muestra un botón personalizado con un color, un modelo y un nombre dados.
+     *
+     * @param color El estado mutable del color del botón.
+     * @param miModel La instancia del modelo VModel asociado al botón.
+     * @param name El texto que se mostrará en el botón.
+     */
+    @Composable
+    fun Boton(color: MutableState<Color>, miModel: VModel, name: String) {
 
+        Button(
+            onClick = {
+                //Recogemos el color que hemos pulsado
+                // miModel.aumentarSecuenciaUsuario(Data.colors.indexOf(color))
+                if (Data.state == Data.State.WAITING && miModel.buttonsEnabled) {
+                    miModel.guardarSecuenciaUsuario(Data.colors.indexOf(color))
+                    miModel.cambiaColorBotonAlPulsar(color)
+                }
+            },
+            modifier = Modifier
+                .padding(10.dp)
+                .size(150.dp)
+                .padding(8.dp), // Añadir padding para que se vean mejor los bordes redondeados
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp), // Agregar bordes redondeados
+
+            colors = ButtonDefaults.buttonColors(color.value)
+        ) {
+            Text(
+                text = name,
+                color = Color.Black,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 20.sp
+            )
+        }
+    }
+
+
+
+
+    /**
+     * Composable que muestra un botón de inicio para comenzar el juego.
+     *
+     * @param miModel La instancia del modelo VModel asociado al botón de inicio.
+     */
+    @Composable
+    fun StartButton(miModel: VModel) {
+        //Declaramos un Boton
+        Button(
+            onClick = {
+                miModel.startGame()
+                miModel.changeState()
+                if (Data.state == Data.State.SEQUENCE ){
+                    miModel.generarSecuencia()
+                    miModel.changeState()
+                }else{
+                    miModel.startGame()
+                }
+
+            },
+            modifier = Modifier
+            // Aumentar ligeramente el tamaño del botón
+        ) {
+            Text(
+                text = "START",
+                color = Color.Black,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 20.sp
+            )
+        }
+    }
+
+    /**
+     * Composable que muestra un botón para enviar una secuencia en el juego.
+     *
+     * @param miModel La instancia del modelo VModel asociado al botón de envío.
+     */
+    @Composable
+    fun Enviar(miModel: VModel) {
+        Button(
+            onClick = {
+                if (Data.state == Data.State.WAITING){
+                    if ( miModel.comprobarSecuencia()) {
+                        Log.d("corutina", "Secuencia correcta y se lanza la función aumentar secuencia")
+                        miModel.aumentarSecuencia()
+                    }else{
+                        Log.d("corutina", "Secuencia incorrecta")
+                        Data.state = Data.State.FINISHED
+                    }
+
+                }
+
+
+            },
+            modifier = Modifier
+                .padding(horizontal = 16.dp) // Espacio a los lados del botón
+            // Aumentar ligeramente el tamaño del botón
+        ) {
+            Text(
+                text = "ENVIAR",
+                color = Color.Black,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 20.sp
+            )
+        }
+    }
 
 
 }
