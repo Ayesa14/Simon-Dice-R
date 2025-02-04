@@ -1,35 +1,62 @@
-package src.main.java.com.ayesa.simondice2
+package com.ayesa.simondice2
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+/**
+ * Clase que almacena los datos globales del juego Simon Dice.
+ * Utiliza un enfoque basado en estado mutable para la reactividad en la UI.
+ */
 object Data {
-    var round = mutableStateOf(0);
-    var secuence = mutableListOf<Int>();
-    var secuenceUser = mutableListOf<Int>();
-    var record = mutableStateOf(0);
-    var state = State.START;
-    var colors = listOf(
+    private val _round = MutableStateFlow(0)
+    val round: StateFlow<Int> = _round
+
+    private val _sequence = MutableStateFlow<List<Int>>(emptyList())
+    val sequence: StateFlow<List<Int>> = _sequence
+
+    private val _userSequence = MutableStateFlow<List<Int>>(emptyList())
+    val userSequence: StateFlow<List<Int>> = _userSequence
+
+    private val _record = MutableStateFlow(0)
+    val record: StateFlow<Int> = _record
+
+    private val _state = MutableStateFlow(State.START)
+    val state: StateFlow<State> = _state
+
+    val colors = listOf(
         Colors.ROJO.color,
         Colors.AZUL.color,
         Colors.AMARILLO.color,
         Colors.VERDE.color
     )
 
-    /**
-     * Arreglo de colores disponibles en el juego Simon.
-     * Contiene todos los colores definidos en la enumeración Colors.
-     */
     var numColors = Colors.values()
-
-    /**
-     * Color actual utilizado en el juego.
-     * Almacena el color actual en el camino del juego.
-     * Por defecto, se establece en blanco.
-     */
     var colorPath: Color = Color.White
 
+    fun updateRound(value: Int) {
+        _round.value = value
+    }
+
+    fun updateSequence(newSequence: List<Int>) {
+        _sequence.value = newSequence
+    }
+
+    fun updateUserSequence(newSequence: List<Int>) {
+        _userSequence.value = newSequence
+    }
+
+    fun updateRecord(value: Int) {
+        _record.value = value
+    }
+
+    fun updateState(newState: State) {
+        _state.value = newState
+    }
+    fun increaseRound() {
+        _round.value++
+    }
 
     /**
      * Enumeración que representa los distintos estados del juego.
@@ -40,7 +67,8 @@ object Data {
         SEQUENCE, // Mostrando la secuencia de colores
         WAITING, // Esperando la interacción del usuario
         CHECKING, // Comprobando la secuencia del usuario
-        FINISHED // Juego finalizado
+        FINISHED, // Juego finalizado
+        SHOW_SEQUENCE
     }
 
 
@@ -51,11 +79,11 @@ object Data {
      * @property color El estado mutable del color.
      * @property colorName El nombre del color.
      */
-    enum class Colors(val color: MutableState<Color>,  val colorName: String) {
+    enum class Colors(val color: MutableState<Color>, val colorName: String) {
         ROJO(mutableStateOf(Color.Red), "ROJO"),
-        AZUL(color = mutableStateOf(Color.Blue), "AZUL"),
-        AMARILLO(color = mutableStateOf(Color.Yellow), "AMARILLO"),
-        VERDE(color = mutableStateOf(Color.Green), "VERDE"),
+        AZUL(mutableStateOf(Color.Blue), "AZUL"),
+        AMARILLO(mutableStateOf(Color.Yellow), "AMARILLO"),
+        VERDE(mutableStateOf(Color.Green), "VERDE"),
 
     }
 
