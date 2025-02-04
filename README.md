@@ -1,86 +1,108 @@
-# SIMON DICE
-En este proyecto vamos a realizar un juego de Simón Dice que consistirá en tener 4 botones de colores que se iluminarán de forma aleatoria y el usuario tendrá que repetir la secuencia.
+# 🎮 SIMON DICE  
 
-## Comenzando
-Para ejecutar el proyecto, es necesario comprender la lógica del juego de Simón Dice. Para ello, vamos a estructurar el código de la siguiente manera:
-## Índice de Contenidos
+Este proyecto es una implementación del clásico juego "Simón Dice", en el cual el usuario debe repetir una secuencia de colores generada aleatoriamente. Se ha desarrollado siguiendo el patrón **MVVM** y utilizando **StateFlow** para una mejor reactividad en la interfaz de usuario.  
 
-1. [Estructura del código](#estructura-del-código)
-2. [Data Class](#data-class)
-3. [ViewModel](#viewmodel)
-4. [Interfaz de Usuario (UI)](#interfaz-de-usuario-ui)
-5. [MainActivity](#mainactivity)
+## 🚀 Comenzando  
+  
 
-### Estructura del código
-Vamos a emplear el patrón de diseño MVVM, donde tendremos:
-- Una `data class` que contendrá los datos de los botones y el estado del juego.
-- Un `ViewModel` que contendrá la lógica del juego.
-- Una `Activity` que contendrá la vista del juego.
+## 📌 Índice de Contenidos  
 
-### Data Class
-En la data class, almacenamos los datos esenciales del juego:
-- `round`: el número de ronda actual.
-- `sequence`: la secuencia generada aleatoriamente por el juego.
-- `sequenceUser`: la secuencia ingresada por el usuario.
-- `record`: el récord actual del jugador.
-- `state`: el estado del juego (START, SEQUENCE, WAITING, CHECKING o FINISHED).
-- `colors`: una lista de colores disponibles en el juego.
-- `numColors`: una enumeración de los colores definidos en el juego.
-- `colorPath`: el color actual utilizado en el juego.
+- Estructura del código  
+- Data Class  
+- ViewModel  
+- Interfaz de Usuario (UI)  
+- MainActivity  
 
-### ViewModel
+## 🛠 Estructura del código  
 
-El `ViewModel` es responsable de manejar la lógica del juego y la interacción entre la vista y los datos. Contiene métodos esenciales para iniciar un juego nuevo, cambiar el estado del juego, generar la secuencia de colores, manejar la interacción con los botones y verificar la secuencia ingresada por el usuario.
+Se ha implementado el patrón de diseño **MVVM**, con una separación clara entre la lógica de negocio y la interfaz de usuario:  
 
-Este ViewModel contiene los siguientes métodos principales:
+✅ **Data Class**: Contiene los datos del juego y el estado de la aplicación.  
+✅ **ViewModel**: Maneja la lógica del juego y la comunicación con la interfaz.  
+✅ **UI (Jetpack Compose)**: Renderiza la interfaz de usuario, interactuando con el ViewModel.  
+✅ **MainActivity**: Configura la aplicación y muestra la pantalla principal del juego.  
 
-- `startGame()`: Inicia un nuevo juego reiniciando los valores del juego a su estado inicial.
-- `changeState()`: Cambia el estado de la aplicación al siguiente estado en el ciclo del juego.
-- `generarSecuencia()`: Genera una secuencia aleatoria de colores en el juego de Simon, mostrando secuencialmente los colores almacenados en la secuencia.
-- `aumentarSecuencia()`: Aumenta la secuencia de colores en el juego de Simon si el estado actual lo permite.
-- `guardarSecuenciaUsuario()`: Guarda el color seleccionado por el usuario en la secuencia del jugador.
-- `comprobarSecuencia()`: Comprueba si la secuencia del jugador coincide con la secuencia generada por el juego.
+---
 
-Este ViewModel hace uso de coroutines para controlar los tiempos de espera entre acciones, así como también se encarga de manejar el estado del juego y los colores de los botones de manera adecuada.
+## 📂 Data Class  
 
-Es importante ajustar y adaptar estas funcionalidades según las necesidades específicas de tu aplicación, así como también implementar la lógica de interacción con la vista para crear una experiencia de juego óptima.
+La Data Class almacena y gestiona los datos esenciales del juego, como:  
 
-### Interfaz de Usuario (UI)
+- `round`: Número de ronda actual.  
+- `sequence`: Secuencia generada aleatoriamente por el juego.  
+- `userSequence`: Secuencia ingresada por el usuario.  
+- `record`: Récord actual del jugador.  
+- `state`: Estado del juego (`START`, `SEQUENCE`, `WAITING`, `CHECKING`, `FINISHED`).  
+- `colors`: Lista de colores disponibles en el juego.  
+- `numColors`: Enumeración de los colores utilizados en el juego.  
 
-El archivo UI (`composable`) proporciona la interfaz de usuario del juego de Simón Dice. Este archivo contiene componibles (funciones `@Composable`) que definen la estructura y la apariencia visual del juego.
+---
 
-#### Composables Principales
+## 🎯 ViewModel (Lógica del juego)  
 
-- **Greeting**: Es el `Composable` principal que muestra la pantalla de saludo del juego. Presenta la información de la ronda actual, el récord, la botonera de colores y botones de inicio y envío.
+El ViewModel maneja la lógica del juego y la interacción entre la vista y los datos, implementando **StateFlow** para mejorar la reactividad.  
 
-- **Record**: Muestra el récord actual del juego utilizando el valor almacenado en `Data.record`.
+### 🔹 Principales funciones del ViewModel  
 
-- **Ronda**: Muestra el número de la ronda actual del juego utilizando el valor almacenado en `Data.round`.
+- **`startGame()`** → Reinicia la partida y genera una nueva secuencia.  
+- **`changeState()`** → Controla el flujo del juego cambiando su estado.  
+- **`generateSequence()`** → Genera y muestra la secuencia de colores de manera dinámica.  
+- **`increaseSequence()`** → Agrega un nuevo color a la secuencia en cada ronda.  
+- **`addUserInput()`** → Guarda la selección del usuario y verifica la secuencia.  
+- **`checkSequence()`** → Comprueba si la secuencia ingresada por el usuario es correcta.  
 
-- **Botonera**: Organiza los botones de colores en filas y columnas utilizando el modelo `VModel`.
+### 🔹 Mejoras en el ViewModel  
 
-- **Boton**: Define un botón personalizado con un color, un modelo (`VModel`) y un nombre dados. Este botón está asociado con la lógica del juego.
+✅ **Uso de `StateFlow`** para manejar los cambios de estado de forma reactiva.  
+✅ **Manejo de corutinas** para gestionar la visualización de la secuencia y los tiempos de espera.  
+✅ **Separación clara entre la lógica del juego y la interfaz de usuario.**  
 
-- **StartButton**: Muestra un botón de inicio para comenzar el juego. Al presionar este botón, se inicia el juego y se genera la secuencia inicial.
+---
 
-- **Enviar**: Muestra un botón para enviar una secuencia en el juego. Este botón verifica la secuencia del jugador y realiza acciones dependiendo del estado del juego.
+## 🎨 Interfaz de Usuario (UI - Jetpack Compose)  
 
-Estos composables se encargan de mostrar la información relevante, los botones de colores y los controles necesarios para jugar, interactuando con el `VModel` para manejar la lógica del juego y los estados de la aplicación.
+La UI del juego se compone de varios **@Composable** para estructurar y mostrar la información de manera eficiente.  
 
-### MainActivity
+### 🖥 Composables principales  
 
-La `MainActivity` es la entrada principal de la aplicación. En ella, se establece el tema visual y se define la estructura de la interfaz de usuario a través de los componibles de Jetpack Compose.
+- **`GameScreen(viewModel: VModel)`** → Composable principal que organiza la interfaz.  
+- **`GameInfo(viewModel: VModel)`** → Muestra la ronda y el récord en tiempo real.  
+- **`ButtonGrid(viewModel: VModel)`** → Renderiza los botones de colores.  
+- **`GameButton(color, viewModel, name, index)`** → Representa cada botón de color con animaciones.  
+- **`ControlButtons(viewModel: VModel)`** → Controles "START" y "ENVIAR".  
 
-En este caso, la `MainActivity`:
+### 🔹 Mejoras en la UI  
 
-- Extiende de `ComponentActivity`, una clase proporcionada por Android Jetpack que permite interactuar con el ciclo de vida de una actividad en Android.
+✅ **Implementación de `collectAsState()`** para actualizar la interfaz en tiempo real.  
+✅ **Cambio dinámico de color en los botones** usando `StateFlow`.  
+✅ **Animaciones fluidas y diseño optimizado con Jetpack Compose.**  
 
-- En el método `onCreate()`, se establece el contenido de la actividad utilizando `setContent`. Dentro de este método se utiliza el tema `SimonDiceTheme` y se coloca un `Surface` que contiene el `Composable` principal llamado `Greeting`, pasándole una instancia del modelo `VModel()`.
+---
 
-- `SimonDiceTheme` proporciona el tema visual global de la aplicación, definiendo la apariencia y estilos que se aplican a los elementos de la interfaz de usuario.
+## 📌 MainActivity (Punto de entrada)  
 
-- `Surface` es un contenedor visual que muestra el contenido definido por el `Composable` `Greeting`, el cual representa la pantalla principal del juego de Simón Dice.
+La **MainActivity** configura la aplicación y muestra la interfaz de usuario utilizando Jetpack Compose.  
 
-Esta clase es esencial para la configuración inicial de la aplicación y la presentación de la interfaz de usuario basada en los componibles de Jetpack Compose.
+- Se extiende de `ComponentActivity`.  
+- Usa `setContent {}` para definir la estructura de la UI.  
+- Inicia `GameScreen(viewModel = VModel())` como el Composable principal.  
+- Aplica el tema `SimonDiceTheme` para el estilo visual.  
 
+---
 
+## ✨ Conclusión  
+
+Esta versión del juego **Simón Dice** implementa el patrón **MVVM**, el **patrón de diseño Observer** con `StateFlow`, y **corutinas** para manejar tareas asíncronas.  
+El código está optimizado para mejorar la fluidez, la reactividad y la experiencia del usuario.  
+
+### 📌 Características clave  
+
+✅ Arquitectura **MVVM** bien estructurada.  
+✅ Uso eficiente de **StateFlow** y **corutinas**.  
+✅ UI moderna con **Jetpack Compose**.  
+✅ Implementación del patrón **Observer** para reactividad.  
+✅ Experiencia de juego fluida e intuitiva.  
+
+---
+
+¡Listo para jugar y mejorar reflejos! 🚀🎮  
