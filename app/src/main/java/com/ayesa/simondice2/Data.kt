@@ -66,7 +66,6 @@ object Data {
         START, // Estado inicial del juego
         SEQUENCE, // Mostrando la secuencia de colores
         WAITING, // Esperando la interacción del usuario
-        CHECKING, // Comprobando la secuencia del usuario
         FINISHED, // Juego finalizado
         SHOW_SEQUENCE
     }
